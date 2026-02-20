@@ -1,59 +1,44 @@
 <?php
 
-$name = "TebanDev98";
-$isDev = true;
-$age = 18;
+const API_URL = "https://whenisthenextmcufilm.com/api";
+//Incializar nueva sesion de cURL; ch = curl handle
+$ch = curl_init(API_URL);
+//Indicar que queremos recibir el resultado y no mostrarlo en pantalla
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//Ejecutar la solicitud y almacenar la respuesta en una variable
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+//Cerrar la sesión de cURL
+curl_close($ch);
 
-$output = "Hola $name, tienes $age años. Bienvenido a PHP. 😀";
 
-$outputAge = match (true) {
-    $age < 2 => "Eres un bebé 👶",
-    $age < 12 => "Eres un niño 👦",
-    $age < 18 => "Eres un adolescente 🧒",
-    $age === 18 => "Eres mayor de edad 🍻",
-    $age < 30 => "Eres un joven adulto 👨‍🦱",
-    $age < 60 => "Estas con un pie alla y otro aca ⚰️",
-};
-//Variables globales y locales
-
-//Variable global, se puede acceder desde cualquier parte del código
-
-define('LOGO_URL', 'https://cdn-icons-png.flaticon.com/512/5968/5968332.png');
-
-//Variable local, como constante, solo se puede acceder dentro de la función
-
-const NOMBRE = "TebanDev98" ;
-
-//Arrays
-
-$bestlenguajes = ["PHP", "JavaScript", "Python", "C#", "Java"];
-$bestlenguajes [4] = "TypeScript"; //Agrega un nuevo elemento al array
-$bestlenguajes [] = "Go"; //Agrega un nuevo elemento al array
-
-//Arrays asociativos
-
-$person = [
-    "name" => "TebanDev98",
-    "age" => 18,
-    "isDev" => true,
-    "lenguajes" => ["PHP", "JavaScript", "Python", "C#", "Java"]
-];
-
-$person ["name"] = "Deivy Urbina"; //Modifica el valor de la clave "name"
-$person ["lenguajes"] [] = "Go"; //Agrega un nuevo elemento al array de la clave "lenguajes"
 ?>
 
-<ul>
-    <?php foreach ($bestlenguajes as $key => $lenguajes) : ?>
-        <li><?=  $key . " " . $lenguajes ?></li>
-    <?php endforeach; ?>
-</ul>
+<head>
+    <meta charset="UTF-8" />
+    <title>La proxima pelicula de Marvel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Cual es la proxima pelicula de Marvel?" />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css"
+    />
+</head>
 
-<h2><?= $outputAge ?></h2>
-<img src="<?= LOGO_URL ?>" alt="PHP LOGO" width="200">
-<h1>
-    <?= $output ?>
-</h1>
+<main>
+    <section>
+        <img 
+        src="<?=  $data["poster_url"]; ?>" width = 
+        "200"  alt="Poster de <?= $data["title"] ?>"
+        style="border: 2px solid #000; border-radius: 16px"/>
+    </section>
+
+    <hgroup>
+        <h3><?= $data["title"]; ?> se estrena en <?= $data["days_until"]; ?> dias</h3>
+        <p> Fecha de estreno: <?= $data["release_date"]; ?></p>
+        <p> La siguiente es: <?= $data["following_production"]["title"]; ?></p>
+    </hgroup>
+</main>
 
 <style>
     :root {
@@ -64,4 +49,22 @@ $person ["lenguajes"] [] = "Go"; //Agrega un nuevo elemento al array de la clave
         display : grid;
         place-content: center;
     }
+
+    section {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    hgroup {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    img {
+        margin: 0 auto;
+    }
 </style>
+    
