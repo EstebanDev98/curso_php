@@ -8,8 +8,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 //Ejecutar la solicitud y almacenar la respuesta en una variable
 $response = curl_exec($ch);
 $data = json_decode($response, true);
-//Cerrar la sesión de cURL
-curl_close($ch);
+
 
 
 ?>
